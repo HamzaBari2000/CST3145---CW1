@@ -42,3 +42,8 @@ body {
   margin: 20px;
   display: inline-block;
 }
+
+#sort-section {
+  padding-top: 50px;
+  padding-left: 600px;
+}

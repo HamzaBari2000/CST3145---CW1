@@ -16,6 +16,7 @@
         <header id="navbar">
             <h1 id="sitetitle" v-text="sitename"></h1>
             <button v-show="btnCart" id="btnCart" v-on:click='showCart'>
+                <!--Returns the Number of Items Inside the Cart.-->
                 {{cartItemCount}}
                 <span id="btnText" class="fas fa-cart-plus">Cart</span>
             </button>
@@ -25,6 +26,18 @@
             <div id="box" v-if='showLessonsPage'>
                 <div id="sort-section">
                     <h1>Sorting By:</h1>
+                    <!--V-model - Sort will automatically pick up changes and update the data on screen-->
+                    <select v-model="sort" v-on:change="sortLessons">
+                        <!--Accroding to each value of the switch case it will execute that case/function and sort those subjects.-->
+                        <option :value="1">Subject Name: A to Z</option>
+                        <option :value="2">Subject Name: Z to A</option>
+                        <option :value="3">Location: A to Z</option>
+                        <option :value="4">Location: Z to A</option>
+                        <option :value="5">Price: Cheap to Expensive</option>
+                        <option :value="6">Price: Expensive to Cheap</option>
+                        <option :value="7">Availability: High to Low</option>
+                        <option :value="8">Availability: Low to High</option>
+                    </select>
                 </div>
                 <div id="main" v-for="lesson in lessons">
                     <!--Using this V-for all the lessons in the lessons.js will be displayed in this section.
@@ -81,6 +94,7 @@
                 displayLessonsCart: [],
                 showLessonsPage: true,
                 btnCart: true,
+                sort: '',
             },
             mounted() { //This is used when the page first loads up, this will execute everyting in the beggining. 
                 this.btnCart = false;
@@ -97,14 +111,16 @@
                     this.displayLessonsCart = JSON.parse(localStorage.getItem("Cart"));
                     this.showLessonsPage = this.showLessonsPage ? false : true; //Turn the message to false to display the cart. 
                 },
-                cartCount(lesson) {
+                cartCount(lesson) { //Finding a lesson element from the cart which will equal the same lesson. 
                     let count = 0;
+                    //This for-loop is going to go through everyting inside of the cart. 
                     for (let i = 0; i < this.displayLessonsCart.length; i++) {
+                        //If an element of the cart is equal/equal type to the input(lesson) them, the count will increase by 1.
                         if (this.displayLessonsCart[i] === lesson) {
                             count++;
                         }
                     }
-                    return count;
+                    return count; //Returns the count of how many have been identified.
                 },
                 addToCart(lesson) {
                     this.btnCart = true;    //If one lesson is added to the cart then it will show the cart button.
@@ -112,8 +128,69 @@
                     localStorage.setItem("Cart", JSON.stringify(this.displayLessonsCart));  //Updatimg the Cart each time a lesson is added. 
                 },
                 canAddToCart(lesson) {
-                    //If the lesson space i.e. 5 is greater then the cart count. 
+                    //Comparing how many is already in the cart with the actual lesson space. 
                     return lesson.Space > this.cartCount(lesson);
+                },
+                sortLessons() {
+                    switch (this.sort) {
+                        case 1:
+                            //Takes 2 values a,b. comapres them using the '<' and '>' operators.
+                            return this.lessons.sort((a, b) => {
+                                if (a.SubjectName < b.SubjectName) {
+                                    return -1;
+                                } else if (a.SubjectName > b.SubjectName) {
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
+                            })
+                        case 2:
+                            return this.lessons.sort((a, b) => {
+                                if (a.SubjectName < b.SubjectName) {
+                                    return 1;
+                                } else if (a.SubjectName > b.SubjectName) {
+                                    return -1;
+                                } else {
+                                    return 0;
+                                }
+                            })
+                        case 3:
+                            return this.lessons.sort((a, b) => {
+                                if (a.Location < b.Location) {
+                                    return -1;
+                                } else if (a.Location > b.Location) {
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
+                            })
+                        case 4:
+                            return this.lessons.sort((a, b) => {
+                                if (a.Location < b.Location) {
+                                    return 1;
+                                } else if (a.Location > b.Location) {
+                                    return -1;
+                                } else {
+                                    return 0;
+                                }
+                            })
+                        case 5:
+                            return this.lessons.sort((a, b) => {
+                                return Number(a.Price) - Number(b.Price)
+                            })
+                        case 6:
+                            return this.lessons.sort((a, b) => {
+                                return Number(b.Price) - Number(a.Price)
+                            })
+                        case 7:
+                            return this.lessons.sort((a, b) => {
+                                return Number(a.Space) - Number(b.Space)
+                            })
+                        case 8:
+                            return this.lessons.sort((a, b) => {
+                                return Number(b.Space) - Number(a.Space)
+                            })
+                    }
                 },
             },
             computed: {
