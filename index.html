@@ -21,8 +21,53 @@
             </button>
         </header>
         <main>
-            <div id="box">
+            <!--If this sections shows true then in will display the lessons section on the webpage-->
+            <div id="box" v-if='showLessonsPage'>
+                <div id="sort-section">
+                    <h1>Sorting By:</h1>
+                </div>
+                <div id="main" v-for="lesson in lessons">
+                    <!--Using this V-for all the lessons in the lessons.js will be displayed in this section.
+                    lessons means all the lessons, lesson means one lesson from the lesson.js, it get's each and displays them here.-->
+                    <h1>Subject: {{lesson.SubjectName}}</h1>
+                    <h2>Location: {{lesson.Location}}</h2>
+                    <h3>Price: £{{lesson.Price}}</h3>
 
+                    <!--If the lesson space is equal and equal type to the cart Cout then it should show this message. 
+                    5 is the maxium space for one lesson so if a lesson space is equal/type to 5 then it should display this message.-->
+                    <span v-if='lesson.Space === cartCount(lesson)'>
+                        <h4>Spaces Full</h4>
+                    </span>
+
+                    <!--Else If lesson space is less then 5 then redcue one space using the minus operater, also 
+                    showing the updated spaces on the page as its being reuced. This will automatiicly stop when it will go greater then 5.-->
+                    <span v-else-if="lesson.Space - cartCount(lesson) < 5">
+                        <h4>Available Spaces: {{lesson.Space - cartCount(lesson)}}</h4>
+                    </span>
+
+                    <!--Else if will just show the remaining spaces left in the lessons.-->
+                    <span v-else>
+                        <h4>Available Spaces: {{lesson.Space}}</h4>
+                    </span>
+
+                    <figure>
+                        <img v-bind:src="lesson.Image" height="100" width="100">
+                    </figure>
+
+                    <!--Clicking on the add to cart button will add a lesson to the cart util it can add to the cart. -->
+                    <!--If it can add to cart then the button will be diplayed an the user can keep on adding-->
+                    <button v-on:click='addToCart(lesson)' v-if='canAddToCart(lesson)'>Add to cart</button>
+
+                    <!--If it cannot add as spaces will be full then  it will hide the button.-->
+                    <button id="hide" hidden="hidden" v-else>Add to cart</button>
+                </div>
+            </div>
+            <!--If the show lessons page == false then it will switch to the cart section and display the cart section on the app -->
+            <div id="cart-page" v-else>
+                <!--Switching to the Cart Page-->
+                <center>
+                    <h1>Cart</h1>
+                </center>
             </div>
         </main>
     </div>
@@ -30,31 +75,50 @@
     <script type="text/javascript">
         let lessonApp = new Vue({
             el: '#app',
-            data: {
+            data: { //All the varibles and data for the V-show, V-model, and lessons cart data are defined in this section.
                 sitename: 'Lessons-App',
                 lessons: JSON.parse(localStorage.getItem("Lessons")),
                 displayLessonsCart: [],
                 showLessonsPage: true,
                 btnCart: true,
             },
-            mounted() {
+            mounted() { //This is used when the page first loads up, this will execute everyting in the beggining. 
                 this.btnCart = false;
             },
             methods: {
                 showCart() {
-                    if (document.getElementById("btnText").innerHTML = "Cart") {
+                    //Chnaging button text based on the naviigation between lesson-section & cart-section.
+                    if (document.getElementById("btnText").innerHTML = "Cart") { //First displayed as cart.
                         document.getElementById("btnText").innerHTML = "Lessons";
                     } else {
                         document.getElementById("btnText").innerHTML = "Cart";
                     }
-                    //Updating the cart here so it only shows the lessons which have been added and not the previous ones. 
+                    //Getting the Cart for displaying.
                     this.displayLessonsCart = JSON.parse(localStorage.getItem("Cart"));
                     this.showLessonsPage = this.showLessonsPage ? false : true; //Turn the message to false to display the cart. 
+                },
+                cartCount(lesson) {
+                    let count = 0;
+                    for (let i = 0; i < this.displayLessonsCart.length; i++) {
+                        if (this.displayLessonsCart[i] === lesson) {
+                            count++;
+                        }
+                    }
+                    return count;
+                },
+                addToCart(lesson) {
+                    this.btnCart = true;    //If one lesson is added to the cart then it will show the cart button.
+                    this.displayLessonsCart.push(lesson);   //Pushing the lessing into the Cart Array.
+                    localStorage.setItem("Cart", JSON.stringify(this.displayLessonsCart));  //Updatimg the Cart each time a lesson is added. 
+                },
+                canAddToCart(lesson) {
+                    //If the lesson space i.e. 5 is greater then the cart count. 
+                    return lesson.Space > this.cartCount(lesson);
                 },
             },
             computed: {
                 cartItemCount() {
-                    return this.displayLessonsCart.length; //Returns the number of items inside the cart and will update on increse and decrease.
+                    return this.displayLessonsCart.length; //Returns the number of items inside the cart and will update on the increse and decrease.
                 },
             },
         });
