@@ -60,3 +60,16 @@ body {
   margin: 20px;
   display: inline-block;
 }
+
+#checkout-section {
+  background-color: goldenrod;
+  width: 300px;
+  border: 15px solid rgb(207, 9, 42);
+  padding: 50px;
+  margin: 20px;
+  display: inline-block;
+}
+
+#msg {
+  color: green;
+}

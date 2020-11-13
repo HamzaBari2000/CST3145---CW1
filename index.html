@@ -90,6 +90,31 @@
                     <h3>Price: £{{ cart.Price }}</h3>
                     <h4>Spaces: {{ cart.Space }}</h4>
                     <img v-bind:src="cart.Image" height="60px" width="60px"><br><br>
+                    <!--This button removes the lesson from the cart-->
+                    <button v-on:click="removeLesson(cart)">Remove</button>
+                </div>
+
+                <br>
+
+                <!--Displaying The Checkout-->
+                <div id="checkout-section">
+                    <h2>Checkout</h2>
+                    <p>
+                        <strong>Name:</strong>
+                        <!-- This input field is bound to 'firstName' in the 'order' object -->
+                        <input v-model.trim="checkout.Name" />
+                    </p>
+                    <p>
+                        <strong>Phone Number:</strong>
+                        <!-- This input field is bound to 'lastName' in the 'order' object -->
+                        <input v-model.trim="checkout.PhoneNo" />
+                    </p>
+
+                    <h2>Order Information</h2>
+                    <p>First Name: {{checkout.Name}}</p>
+                    <p>Phone Number: {{checkout.PhoneNo}}</p>
+                    <button v-on:click="purchase" v-if="checkCheckout">Checkout</button>
+                    <p v-show="checkoutMsg" id="msg">Your Order has been purhcased.</p>
                 </div>
 
             </div>
@@ -106,6 +131,12 @@
                 showLessonsPage: true,
                 btnCart: true,
                 sort: '',
+                checkout: {
+                    Name: '',
+                    PhoneNo: '',
+                },
+                checkoutMsg: false,
+                orders: [],
             },
             mounted() { //This is used when the page first loads up, this will execute everyting in the beggining. 
                 this.btnCart = false;
@@ -115,8 +146,6 @@
                     //Chnaging button text based on the naviigation between lesson-section & cart-section.
                     if (document.getElementById("btnText").innerHTML = "Cart") { //First displayed as cart.
                         document.getElementById("btnText").innerHTML = "Lessons";
-                    } else {
-                        document.getElementById("btnText").innerHTML = "Cart";
                     }
                     //Getting the Cart for displaying.
                     this.displayLessonsCart = JSON.parse(localStorage.getItem("Cart"));
@@ -126,7 +155,7 @@
                     let count = 0;
                     //This for-loop is going to go through everyting inside of the cart. 
                     for (let i = 0; i < this.displayLessonsCart.length; i++) {
-                        //If an element of the cart is equal/equal type to the input(lesson) them, the count will increase by 1.
+                        //If an element of the cart is equal/equal type to the input(lesson) then, the count will increase by 1.
                         if (this.displayLessonsCart[i] === lesson) {
                             count++;
                         }
@@ -226,10 +255,51 @@
                             })
                     }
                 },
+                removeLesson(cart) {
+                    const index = this.displayLessonsCart.indexOf(cart);    //Finds the index of the Cart Array. 
+                    if (index !== -1) { //If index of the cart array is not equal value or equal type. 
+                        this.displayLessonsCart.splice(index, 1);   //Splice is used to remove that index. 
+                    }
+                    localStorage.setItem("Cart", JSON.stringify(this.displayLessonsCart));  //Updates the Cart Array. 
+
+                    //This function will execute when cart == 0.
+                    if (this.displayLessonsCart == 0) {
+                        if (document.getElementById("btnText").innerHTML = "Lessons") {
+                            document.getElementById("btnText").innerHTML = "Cart";
+                        }
+                        this.btnCart = false; //As the cart has 0 lessons the button will not be visible.
+                        this.showLessonsPage = this.showLessonsPage ? false : true; //This will Automatticly chnage to the lesson webpage from the cart page.
+                    }
+                },
+                purchase() {
+                    this.checkoutMsg = true;
+                    let userDetails = "Username: " + this.checkout.Name + "  Phonenumber: " + this.checkout.PhoneNo;
+                    this.orders.push(userDetails);
+                    localStorage.setItem("Orders", JSON.stringify(this.orders));
+
+                    //This will reset the application after an order has been placed.
+                    setTimeout(function () {
+                        this.displayLessonsCart = [];   //clears the cart after the order has been purchased.
+                        localStorage.setItem("Cart", JSON.stringify(this.displayLessonsCart));  //Resetting the cart array.
+                        location.reload();
+                    }, 5000);   //Refreshes after 5 seconds. 
+                },
+                validateCheckout(name, phoneNumber) {
+                    let regExname = /^[A-Za-z]+$/;
+                    let regExphoneNumber = /^[\s()+-]*([0-9][\s()+-]*){11,20}$/;
+                    return regExname.test(name) && regExphoneNumber.test(phoneNumber);
+                },
             },
             computed: {
                 cartItemCount() {
                     return this.displayLessonsCart.length; //Returns the number of items inside the cart and will update on the increse and decrease.
+                },
+                checkCheckout() {
+                    if (!this.validateCheckout(this.checkout.Name, this.checkout.PhoneNo)) {
+                        return false;
+                    } else {
+                        return true;
+                    }
                 },
             },
         });
