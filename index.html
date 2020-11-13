@@ -134,61 +134,84 @@
                 sortLessons() {
                     switch (this.sort) {
                         case 1:
-                            //Takes 2 values a,b. comapres them using the '<' and '>' operators.
-                            return this.lessons.sort((a, b) => {
-                                if (a.SubjectName < b.SubjectName) {
-                                    return -1;
-                                } else if (a.SubjectName > b.SubjectName) {
+                            return this.lessons.sort((a, b) => {    //For High to Low
+                                if (a.SubjectName > b.SubjectName) {    //If this statement is true then it will return 1.
                                     return 1;
+                                } else if (a.SubjectName < b.SubjectName) { //If this statement is true then it will return -1
+                                    return -1;
                                 } else {
-                                    return 0;
+                                    return 0;   //Else it just returns 0. 
                                 }
                             })
                         case 2:
-                            return this.lessons.sort((a, b) => {
-                                if (a.SubjectName < b.SubjectName) {
-                                    return 1;
-                                } else if (a.SubjectName > b.SubjectName) {
+                            return this.lessons.sort((a, b) => {    //For Low to High
+                                if (a.SubjectName > b.SubjectName) {
                                     return -1;
+                                } else if (a.SubjectName < b.SubjectName) {
+                                    return 1;
                                 } else {
                                     return 0;
                                 }
                             })
                         case 3:
                             return this.lessons.sort((a, b) => {
-                                if (a.Location < b.Location) {
-                                    return -1;
-                                } else if (a.Location > b.Location) {
+                                if (a.Location > b.Location) {
                                     return 1;
+                                } else if (a.Location < b.Location) {
+                                    return -1;
                                 } else {
                                     return 0;
                                 }
                             })
                         case 4:
                             return this.lessons.sort((a, b) => {
-                                if (a.Location < b.Location) {
-                                    return 1;
-                                } else if (a.Location > b.Location) {
+                                if (a.Location > b.Location) {
                                     return -1;
+                                } else if (a.Location < b.Location) {
+                                    return 1;
                                 } else {
                                     return 0;
                                 }
                             })
                         case 5:
                             return this.lessons.sort((a, b) => {
-                                return Number(a.Price) - Number(b.Price)
+                                if (a.Price > b.Price) {
+                                    return 1;
+                                } else if (a.Price < b.Price) {
+                                    return -1;
+                                } else {
+                                    return 0;
+                                }
                             })
                         case 6:
                             return this.lessons.sort((a, b) => {
-                                return Number(b.Price) - Number(a.Price)
+                                if (a.Price > b.Price) {
+                                    return -1;
+                                } else if (a.Price < b.Price) {
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
                             })
                         case 7:
                             return this.lessons.sort((a, b) => {
-                                return Number(a.Space) - Number(b.Space)
+                                if (a.Space > b.Space) {
+                                    return -1;
+                                } else if (a.Space < b.Space) {
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
                             })
                         case 8:
                             return this.lessons.sort((a, b) => {
-                                return Number(b.Space) - Number(a.Space)
+                                if (a.Space > b.Space) {
+                                    return 1;
+                                } else if (a.Space < b.Space) {
+                                    return -1;
+                                } else {
+                                    return 0;
+                                }
                             })
                     }
                 },
