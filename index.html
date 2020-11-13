@@ -152,6 +152,7 @@
                     //Getting the Cart for displaying.
                     this.displayLessonsCart = JSON.parse(localStorage.getItem("Cart"));
                     this.showLessonsPage = this.showLessonsPage ? false : true; //Turn the message to false to display the cart. 
+                    localStorage.setItem("Lessons", JSON.stringify(this.lessons));
                 },
                 cartCount(lesson) { //Finding a lesson element from the cart which will equal the same lesson. 
                     let count = 0;
