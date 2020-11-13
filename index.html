@@ -81,6 +81,17 @@
                 <center>
                     <h1>Cart</h1>
                 </center>
+
+                <!--Displaying Lessons from the Cart Array-->
+                <div id="display-cart" v-for="cart in displayLessonsCart">
+                    <!--cart is one elemnt of the displayLessonsCart Array-->
+                    <h1>{{ cart.SubjectName }}</h1>
+                    <p>Location: {{ cart.Location }}</p>
+                    <h3>Price: £{{ cart.Price }}</h3>
+                    <h4>Spaces: {{ cart.Space }}</h4>
+                    <img v-bind:src="cart.Image" height="60px" width="60px"><br><br>
+                </div>
+
             </div>
         </main>
     </div>

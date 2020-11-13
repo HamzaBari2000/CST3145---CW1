@@ -47,3 +47,16 @@ body {
   padding-top: 50px;
   padding-left: 600px;
 }
+
+#cart-page {
+  padding-left: 85px;
+}
+
+#display-cart {
+  background-color: lightblue;
+  width: 300px;
+  border: 15px solid rgb(207, 9, 42);
+  padding: 50px;
+  margin: 20px;
+  display: inline-block;
+}
