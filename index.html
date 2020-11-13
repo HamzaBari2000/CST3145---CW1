@@ -12,7 +12,54 @@
 </head>
 
 <body>
+    <div id="app">
+        <header id="navbar">
+            <h1 id="sitetitle" v-text="sitename"></h1>
+            <button v-show="btnCart" id="btnCart" v-on:click='showCart'>
+                {{cartItemCount}}
+                <span id="btnText" class="fas fa-cart-plus">Cart</span>
+            </button>
+        </header>
+        <main>
+            <div id="box">
 
+            </div>
+        </main>
+    </div>
+
+    <script type="text/javascript">
+        let lessonApp = new Vue({
+            el: '#app',
+            data: {
+                sitename: 'Lessons-App',
+                lessons: JSON.parse(localStorage.getItem("Lessons")),
+                displayLessonsCart: [],
+                showLessonsPage: true,
+                btnCart: true,
+            },
+            mounted() {
+                this.btnCart = false;
+            },
+            methods: {
+                showCart() {
+                    if (document.getElementById("btnText").innerHTML = "Cart") {
+                        document.getElementById("btnText").innerHTML = "Lessons";
+                    } else {
+                        document.getElementById("btnText").innerHTML = "Cart";
+                    }
+                    //Updating the cart here so it only shows the lessons which have been added and not the previous ones. 
+                    this.displayLessonsCart = JSON.parse(localStorage.getItem("Cart"));
+                    this.showLessonsPage = this.showLessonsPage ? false : true; //Turn the message to false to display the cart. 
+                },
+            },
+            computed: {
+                cartItemCount() {
+                    return this.displayLessonsCart.length; //Returns the number of items inside the cart and will update on increse and decrease.
+                },
+            },
+        });
+
+    </script>
 </body>
 
 </html>
