@@ -46,7 +46,7 @@
                     <h2>Location: {{lesson.Location}}</h2>
                     <h3>Price: £{{lesson.Price}}</h3>
 
-                    <!--If the lesson space is equal and equal type to the cart Cout then it should show this message. 
+                    <!--If the lesson space is equal and equal type to the cart Count then it should show this message. 
                     5 is the maxium space for one lesson so if a lesson space is equal/type to 5 then it should display this message.-->
                     <span v-if='lesson.Space === cartCount(lesson)'>
                         <h4>Spaces Full</h4>
@@ -169,6 +169,7 @@
                     this.btnCart = true;    //If one lesson is added to the cart then it will show the cart button.
                     this.displayLessonsCart.push(lesson);   //Pushing the lessing into the Cart Array.
                     localStorage.setItem("Cart", JSON.stringify(this.displayLessonsCart));  //Updatimg the Cart each time a lesson is added. 
+                    console.log(this.lessons[0])
                 },
                 canAddToCart(lesson) {
                     //Comparing how many is already in the cart with the actual lesson space. 
@@ -276,7 +277,16 @@
                 },
                 purchase() {    //This function is when the user has pressed the checkout button to purchase the lessons. 
                     this.checkoutMsg = true;
-                    let userDetails = "Username: " + this.checkout.Name + "  Phonenumber: " + this.checkout.PhoneNo;
+
+                    //Gets the current Itmes Inside the Cart.
+                    let userOrders = JSON.parse(localStorage.getItem("Cart"));
+
+                    //Creating a user object to store the user name, phoneumber and the userorders.
+                    let userDetails = {
+                        Username: this.checkout.Name,
+                        Phonenumber: this.checkout.PhoneNo,
+                        Orders: userOrders,
+                    };
                     this.orders.push(userDetails);
                     localStorage.setItem("Orders", JSON.stringify(this.orders));    //The order is stored
 
