@@ -18,7 +18,7 @@
             <button v-show="btnCart" id="btnCart" v-on:click='showCart'>
                 <!--Returns the Number of Items Inside the Cart.-->
                 {{cartItemCount}}
-                <span id="btnText" class="fas fa-cart-plus">Cart</span>
+                <span id="btnText" class="fas fa-cart-plus" v-on:click='switchText'> Cart</span>
             </button>
         </header>
         <main>
@@ -145,14 +145,18 @@
             },
             methods: {
                 showCart() {
-                    //Chnaging button text based on the naviigation between lesson-section & cart-section.
-                    if (document.getElementById("btnText").innerHTML = "Cart") { //First displayed as cart.
-                        document.getElementById("btnText").innerHTML = "Lessons";
-                    }
                     //Getting the Cart for displaying.
                     this.displayLessonsCart = JSON.parse(localStorage.getItem("Cart"));
                     this.showLessonsPage = this.showLessonsPage ? false : true; //Turn the message to false to display the cart. 
                     localStorage.setItem("Lessons", JSON.stringify(this.lessons));
+                },
+                switchText() {
+                    let btnText = document.getElementById("btnText");
+                    if (btnText.innerHTML === " Cart") {
+                        btnText.innerHTML = " Lessons";
+                    } else {
+                        btnText.innerHTML = " Cart";
+                    }
                 },
                 cartCount(lesson) { //Finding a lesson element from the cart which will equal the same lesson. 
                     let count = 0;
