@@ -74,27 +74,3 @@ let lessons = [
 
 //Store Data to the Local Storage
 localStorage.setItem("Lessons", JSON.stringify(lessons));
-
-/* 
-
-case 9:
-                            if (this.sortOption === 'name') {
-                                this.items.sort(function (x, y) {
-                                    if (x.name.toLowerCase() < y.name.toLowerCase()) {
-                                        return -1;
-                                    }
-                                    else if (x.name.toLowerCase() > y.name.toLowerCase()) {
-                                        return 1;
-                                    }
-                                    else {
-                                        return 0;
-                                    }
-                                });
-                            }
-                            else {
-                                this.items.sort((x, y) => x.id - y.id);
-                            }
-
-                            return this.items;
-
-*/
