@@ -39,7 +39,9 @@
                         <option :value="8">Availability: Low to High</option>
                     </select>
                 </div>
-                <div id="main" v-for="(lesson, Space) in lessons" :index="lesson.id">
+                <div id="main" v-for="(lesson, Space) in lessons">
+                    <!--Space is the index value of each lesson-->
+
                     <!--Using this V-for all the lessons in the lessons.js will be displayed in this section.
                     lessons means all the lessons, lesson means one lesson from the lesson.js, it get's each and displays them here.-->
                     <h1>Subject: {{lesson.SubjectName}}</h1>
@@ -116,7 +118,10 @@
                     <!--If the users inputted name and phoneNo is both true it will display the checkout button else it won't-->
                     <!--Once it's true then, the user can purchase-->
                     <button v-on:click="purchase" v-if="checkCheckout">Checkout</button>
-                    <p v-show="checkoutMsg" id="msg">Your Order has been purhcased.</p>
+                    <p v-show="checkoutMsg" id="msg">
+                        Your Order has been purhcased.
+                        Wait 5 Seconds as you are being redirected...
+                    </p>
                 </div>
 
             </div>
@@ -150,7 +155,7 @@
                     this.showLessonsPage = this.showLessonsPage ? false : true; //Turn the message to false to display the cart. 
                     localStorage.setItem("Lessons", JSON.stringify(this.lessons));
                 },
-                switchText() {
+                switchText() {  //This is used to change the button text as you switch beetween the lessons and cart page.
                     let btnText = document.getElementById("btnText");
                     if (btnText.innerHTML === " Cart") {
                         btnText.innerHTML = " Lessons";
@@ -173,10 +178,13 @@
                     this.btnCart = true;    //If one lesson is added to the cart then it will show the cart button.
                     this.displayLessonsCart.push(lesson);   //Pushing the lessing into the Cart Array.
                     localStorage.setItem("Cart", JSON.stringify(this.displayLessonsCart));  //Updatimg the Cart each time a lesson is added. 
-                    let getLessons = JSON.parse(localStorage.getItem("Lessons"));
-                    getLessons[Space].Space--;
-                    this.lessons = getLessons;
-                    localStorage.setItem("Lessons", JSON.stringify(getLessons));
+
+                    //This is used for redcucing the space inside the cart array.
+                    //The varible space gets the index number of the lesson in the lessons array.
+                    let getLessons = JSON.parse(localStorage.getItem("Lessons"));   //Gets all the lessons in the lessons array.
+                    getLessons[Space].Space--;  //Reduce the space by the index value. it fins the index vlaue by space and reduces it.
+                    this.lessons = getLessons;  //Updates the lessons array.
+                    localStorage.setItem("Lessons", JSON.stringify(getLessons));    //Sets the updated version to the localstorage.
                 },
                 canAddToCart(lesson) {
                     //Comparing how many is already in the cart with the actual lesson space. 
@@ -194,7 +202,7 @@
                                     return 0;   //Else it just returns 0. 
                                 }
                             })
-                            localStorage.setItem("Lessons", JSON.stringify(sortedValues1));
+                            localStorage.setItem("Lessons", JSON.stringify(sortedValues1)); //For each array I would have to update the localstorge therefore it, doesn't recognisge the incorrect index value.
                             return sortedValues1;
                         case 2:
                             let sortedValues2 = this.lessons.sort((a, b) => {    //For Low to High
@@ -291,9 +299,7 @@
 
                     //This function will execute when cart == 0.
                     if (this.displayLessonsCart == 0) {
-                        if (document.getElementById("btnText").innerHTML = "Lessons") {
-                            document.getElementById("btnText").innerHTML = "Cart";
-                        }
+                        location.reload();
                         this.btnCart = false; //As the cart has 0 lessons the button will not be visible.
                         this.showLessonsPage = this.showLessonsPage ? false : true; //This will Automatticly chnage to the lesson webpage from the cart page.
                     }
