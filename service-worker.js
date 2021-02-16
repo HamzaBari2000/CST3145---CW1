@@ -6,6 +6,7 @@ let cacheFiles = [
   "lessonApp.webmanifest",
   "css/styles.css",
   "img/Logo.png",
+  "img/icon.png",
   "img/cs.jpg",
   "img/maths.svg",
   "img/english.png",
