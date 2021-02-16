@@ -1,4 +1,4 @@
-let cacheName = "lessonsApp";
+let cacheName = "lessonsApp-v4";
 
 let cacheFiles = [
   "index.html",
