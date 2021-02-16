@@ -4,7 +4,7 @@
     "description": "This App is for odering lessons after school for children",
     "icons": [
         {
-            "src": "img/history.png",
+            "src": "img/icon.png",
             "sizes": "512x512",
             "type": "image/png"
         }
