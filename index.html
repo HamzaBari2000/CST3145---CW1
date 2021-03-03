@@ -45,9 +45,6 @@
                         <option :value="8">Availability: Low to High</option>
                     </select>
                 </div>
-                <lesson-list v-for="lesson in lessons" :key="lesson.SubjectName" :subject="lesson.SubjectName"
-                    :location="lesson.Location" :price="lesson.Price" :space="lesson.Space === cartCount(lesson)">
-                </lesson-list>
                 <div id="main" v-for="(lesson, Space) in lessons">
                     <!--Space is the index value of each lesson-->
 
