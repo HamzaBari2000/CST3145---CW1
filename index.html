@@ -45,6 +45,9 @@
                         <option :value="8">Availability: Low to High</option>
                     </select>
                 </div>
+                <lesson-list v-for="lesson in lessons" :key="lesson.SubjectName" :subject="lesson.SubjectName"
+                    :location="lesson.Location" :price="lesson.Price" :space="lesson.Space === cartCount(lesson)">
+                </lesson-list>
                 <div id="main" v-for="(lesson, Space) in lessons">
                     <!--Space is the index value of each lesson-->
 
@@ -135,8 +138,46 @@
     </div>
 
     <script type="text/javascript">
+
+        const LessonListComponent = {
+            props: ['subject', 'location', 'price', 'space'],
+            template:
+                `<div id="main">
+                    <!--Space is the index value of each lesson-->
+
+                    <!--Using this V-for all the lessons in the lessons.js will be displayed in this section.
+                    lessons means all the lessons, lesson means one lesson from the lesson.js, it get's each and displays them here.-->
+                    <h1>Subject: {{ subject }}</h1>
+                    <h2>Location: {{ location }}</h2>
+                    <h3>Price: £{{ price }}</h3>
+ 
+                    <span v-if={{space}}>
+                        <h4>Spaces Full</h4>
+                    </span>
+                    
+                </div>`,
+            methods: {
+                cartCount(lesson) { //Finding a lesson element from the cart which will equal the same lesson. 
+                    let count = 0;
+                    //This for-loop is going to go through everyting inside of the cart. 
+                    for (let i = 0; i < this.displayLessonsCart.length; i++) {
+                        //If an element of the cart is equal/equal type to the input(lesson) then, the count will increase by 1.
+                        if (this.displayLessonsCart[i] === lesson) {
+                            count++;
+                        }
+                    }
+                    return count; //Returns the count of how many have been identified.
+                }
+            }
+        }
+
+
+
         let lessonApp = new Vue({
             el: '#app',
+            components: {
+                'lesson-list': LessonListComponent
+            },
             data: { //All the varibles and data for the V-show, V-model, and lessons cart data are defined in this section.
                 sitename: 'Lessons-App',
                 lessons: JSON.parse(localStorage.getItem("Lessons")),
